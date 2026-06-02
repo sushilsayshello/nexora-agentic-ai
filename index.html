@@ -1,1 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nexora AI — Autonomous Commerce Operations Agent</title>
+  <meta name="description" content="Nexora AI: autonomous commerce operations agent with accessibility-first design, learning modules, and human-in-the-loop governance."/>
+  <style>
+    :root{
+      --bg:#0b0f19;--bg-2:#0f172a;--panel:#111827;--panel-2:#1f2937;
+      --text:#f3f4f6;--muted:#9ca3af;--accent:#22d3ee;--accent-2:#818cf8;
+      --success:#34d399;--warning:#fbbf24;--danger:#f87171;
+      --radius:14px;--shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.55}
+    img{max-width:100%;display:block}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{text-decoration:underline}
+    .container{max-width:1120px;margin:0 auto;padding:0 20px}
+    .kicker{color:var(--accent);text-transform:uppercase;letter-spacing:.12em;font-size:.78rem;font-weight:700;margin-bottom:8px}
+    .section{padding:80px 0}
+    .section-head{margin-bottom:40px}
+    .center{text-align:center}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+    @media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+    .card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:24px;transition:transform .2s,border-color .2s}
+    .card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.12)}
+    .card .icon{font-size:28px;margin-bottom:10px}
+    .card h3{margin-bottom:8px;font-size:1.1rem}
+    .card p{color:var(--muted);font-size:.95rem}
+    a.card{display:block;color:inherit}
+    a.card:hover{text-decoration:none}
+    .content-card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:28px}
+    .content-card h2{margin-bottom:10px;font-size:1.25rem}
+    .content-card p{color:var(--muted)}
+    .btn{display:inline-block;padding:10px 18px;border-radius:10px;font-weight:600;font-size:.95rem;border:1px solid transparent;cursor:pointer}
+    .btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b0f19;border:none}
+    .btn-secondary{background:transparent;border-color:rgba(255,255,255,.2);color:var(--text)}
+    .btn:hover{opacity:.92;text-decoration:none}
+    .notice{background:linear-gradient(90deg,rgba(34,211,238,.12),rgba(129,140,248,.12));border:1px solid rgba(34,211,238,.25);border-radius:var(--radius);padding:20px}
+    .callout{background:var(--panel-2);border-left:4px solid var(--accent);border-radius:var(--radius);padding:18px}
+    .code{background:#0b0f19;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:18px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;font-size:.9rem;color:var(--muted);white-space:pre-wrap}
 
+    /* Header */
+    .site-header{position:sticky;top:0;z-index:50;background:rgba(11,15,25,.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.15rem;color:var(--text)}
+    .brand .logo{width:22px;height:22px;border-radius:6px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:inline-block}
+    .nav-links{display:flex;gap:18px;flex-wrap:wrap}
+    .nav-links a{color:var(--muted);font-size:.92rem;font-weight:500}
+    .nav-links a.active,.nav-links a:hover{color:var(--text)}
+    .nav-cta{display:flex;gap:10px}
+    @media(max-width:900px){.nav-links{display:none}}
+
+    /* Hero */
+    .hero{padding:90px 0 60px}
+    .hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+    @media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+    .eyebrow{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.85rem;margin-bottom:14px}
+    .pulse{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 2s infinite}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}70%{box-shadow:0 0 0 10px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+    .hero h1{font-size:2.6rem;line-height:1.15;margin-bottom:14px}
+    .gradient-text{background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .lead{color:var(--muted);font-size:1.1rem;max-width:560px;margin-bottom:22px}
+    .hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:28px}
+    .quick-stats{display:flex;gap:28px;flex-wrap:wrap}
+    .stat strong{display:block;font-size:1.4rem;color:var(--text)}
+    .stat span{color:var(--muted);font-size:.85rem}
+
+    /* Preview card */
+    .preview-card{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
+    .window-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .dots{display:flex;gap:6px}
+    .dots i{width:10px;height:10px;border-radius:50%;display:inline-block}
+    .dots i:nth-child(1){background:#f87171}.dots i:nth-child(2){background:#fbbf24}.dots i:nth-child(3){background:#34d399}
+    .badge{font-size:.72rem;background:rgba(255,255,255,.08);padding:4px 10px;border-radius:999px;color:var(--muted)}
+    .panel-label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin:16px 0 8px}
+    .event-box{display:flex;align-items:center;justify-content:space-between;background:var(--bg-2);padding:14px;border-radius:10px}
+    .event-box h3{font-size:1rem}.event-box p{color:var(--muted);font-size:.85rem}
+    .value{font-weight:800;color:var(--accent);font-size:1.1rem}
+    .agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .agent-mini{background:var(--bg-2);padding:12px;border-radius:10px;font-size:.88rem}
+    .agent-mini b{display:flex;align-items:center;gap:8px;font-size:.9rem;margin-bottom:4px}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--success)}
+    .explain{background:var(--bg-2);padding:14px;border-radius:10px;color:var(--muted);font-size:.9rem}
+
+    /* Page hero */
+    .page-hero{padding:70px 0 40px}
+    .page-hero h1{font-size:2.2rem;margin-bottom:10px}
+    .page-hero p{color:var(--muted);max-width:720px}
+
+    /* Diagrams */
+    .diagram-shell{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);overflow:hidden;margin-bottom:24px}
+    .diagram-caption{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.08);font-size:.9rem}
+    .diagram-caption span{color:var(--muted);font-size:.82rem}
+    .diagram-img{padding:18px;text-align:center}
+    .diagram-img img{max-height:420px;margin:0 auto}
+    .iframe-wrap{position:relative;padding-bottom:56.25%;height:0}
+    .iframe-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+
+    /* Table */
+    .table{width:100%;border-collapse:collapse;font-size:.95rem}
+    .table th,.table td{padding:12px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
+    .table th{color:var(--muted);font-weight:600;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em}
+    .table tr:hover td{background:rgba(255,255,255,.02)}
+
+    /* Timeline */
+    .timeline{display:flex;flex-direction:column;gap:18px}
+    .timeline-item{display:flex;gap:14px}
+    .timeline-num{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b0f19;display:grid;place-items:center;font-weight:800;font-size:.85rem;flex-shrink:0}
+    .timeline-body h3{font-size:1rem;margin-bottom:4px}
+    .timeline-body p{color:var(--muted);font-size:.9rem}
+
+    /* Video */
+    .video-placeholder{background:var(--panel);border:2px dashed rgba(255,255,255,.12);border-radius:var(--radius);padding:60px 20px;text-align:center}
+    .play{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b0f19;display:grid;place-items:center;font-size:24px;margin:0 auto 16px;cursor:pointer}
+
+    /* Footer */
+    .footer{border-top:1px solid rgba(255,255,255,.08);padding:40px 0;margin-top:20px}
+    .footer-row{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;color:var(--muted);font-size:.9rem}
+    .footer-links{display:flex;gap:16px;flex-wrap:wrap}
+    .footer-links a{color:var(--muted);font-size:.9rem}
+
+    /* Accessibility section */
+    .access-hero{background:linear-gradient(135deg,rgba(34,211,238,.08),rgba(129,140,248,.08));border:1px solid rgba(34,211,238,.15);border-radius:var(--radius);padding:40px;text-align:center;margin-bottom:40px}
+    .access-hero h2{font-size:1.8rem;margin-bottom:10px}
+    .access-hero p{color:var(--muted);max-width:700px;margin:0 auto}
+    .access-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px}
+    @media(max-width:900px){.access-grid{grid-template-columns:1fr}}
+    .access-card{background:var(--panel);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:24px;text-align:center}
+    .access-card .emoji{font-size:36px;margin-bottom:12px}
+    .access-card h3{margin-bottom:8px;font-size:1.1rem}
+    .access-card p{color:var(--muted);font-size:.9rem}
+
+    /* Quiz / Learning Game */
+    .quiz-container{background:var(--panel);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:28px;max-width:800px;margin:0 auto}
+    .quiz-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+    .quiz-progress{height:6px;background:var(--bg-2);border-radius:999px;overflow:hidden;flex:1;margin:0 16px}
+    .quiz-progress > div{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .3s}
+    .quiz-question{font-size:1.15rem;margin-bottom:20px;font-weight:600}
+    .quiz-options{display:flex;flex-direction:column;gap:10px}
+    .quiz-option{background:var(--bg-2);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .2s;color:var(--text);text-align:left;font-size:.95rem}
+    .quiz-option:hover{border-color:var(--accent);background:rgba(34,211,238,.06)}
+    .quiz-option.correct{border-color:var(--success);background:rgba(52,211,153,.1)}
+    .quiz-option.wrong{border-color:var(--danger);background:rgba(248,113,113,.1)}
+    .quiz-feedback{margin-top:16px;padding:14px;border-radius:10px;font-size:.95rem;display:none}
+    .quiz-feedback.show{display:block}
+    .quiz-feedback.correct{background:rgba(52,211,153,.12);border:1px solid var(--success);color:var(--success)}
+    .quiz-feedback.wrong{background:rgba(248,113,113,.12);border:1px solid var(--danger);color:var(--danger)}
+    .quiz-controls{display:flex;gap:10px;justify-content:center;margin-top:20px}
+    .score-board{display:flex;gap:20px;justify-content:center;margin-top:20px;font-size:1.1rem}
+    .score-board span{padding:6px 14px;background:var(--bg-2);border-radius:999px}
+    .manual-toc{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+    .manual-toc button{background:var(--panel-2);border:1px solid rgba(255,255,255,.1);color:var(--text);padding:8px 14px;border-radius:999px;cursor:pointer;font-size:.85rem}
+    .manual-toc button.active{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b0f19;border:none;font-weight:600}
+    .manual-page{display:none}
+    .manual-page.active{display:block}
+    .manual-page h3{margin-bottom:10px;color:var(--accent)}
+    .manual-page p,.manual-page ul{color:var(--muted);margin-bottom:12px}
+    .manual-page ul{padding-left:20px}
+    .manual-page li{margin-bottom:6px}
+
+    /* Skip link for accessibility */
+    .skip-link{position:absolute;top:-40px;left:0;background:var(--accent);color:#0b0f19;padding:8px 16px;z-index:100;font-weight:700;border-radius:0 0 8px 0}
+    .skip-link:focus{top:0}
+
+    /* Reduced motion */
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.pulse{animation:none}}
+    /* High contrast focus */
+    *:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  </style>
+</head>
+<body>
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#home"><span class="logo"></span><span>Nexora AI</span></a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#home">Home</a>
+        <a href="#summary">Summary</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#mcp">MCP</a>
+        <a href="#responsible">Responsible AI</a>
+        <a href="#accessibility">Accessibility</a>
+        <a href="#learn">Learn & Quiz</a>
+        <a href="#manual">Manual</a>
+        <a href="#demo">Demo</a>
+        <a href="#submission">Submission</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-secondary" href="#architecture">Diagrams</a>
+        <a class="btn btn-primary" href="#demo">Demo</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- HOME -->
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="pulse" aria-hidden="true"></span> Hackathon prototype · agentic commerce operations</div>
+          <h1>Recover lost revenue with an <span class="gradient-text">AI agent council.</span></h1>
+          <p class="lead">
+            Nexora AI detects customer events such as cart abandonment, failed payments, high-intent browsing, and VIP activity.
+            It analyses the event, explains the decision, asks for human approval, and executes approved actions through commerce tools.
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#architecture">View Architecture</a>
+            <a class="btn btn-secondary" href="#summary">Read Project Summary</a>
+            <a class="btn btn-secondary" href="#learn">Start Learning</a>
+          </div>
+          <div class="quick-stats">
+            <div class="stat"><strong>7</strong><span>specialised agents</span></div>
+            <div class="stat"><strong>HITL</strong><span>human approval gate</span></div>
+            <div class="stat"><strong>MCP</strong><span>Loomi/Bloomreach wiring</span></div>
+            <div class="stat"><strong>A11y</strong><span>accessible by design</span></div>
+          </div>
+        </div>
+
+        <div class="preview-card" role="img" aria-label="Dashboard preview showing a customer event and agent council analysis">
+          <div class="window-top"><div class="dots" aria-hidden="true"><i></i><i></i><i></i></div><span class="badge">Live API / Demo Mode</span></div>
+          <div class="panel-label">Customer Event</div>
+          <div class="event-box">
+            <div><h3>John abandoned checkout</h3><p>Cart abandonment · loyal customer · reached payment page</p></div>
+            <div class="value">$450</div>
+          </div>
+          <div class="panel-label">Agent Council</div>
+          <div class="agent-grid">
+            <div class="agent-mini"><b><span class="dot" aria-hidden="true"></span>Intent Agent</b><p>High-intent abandonment detected.</p></div>
+            <div class="agent-mini"><b><span class="dot" aria-hidden="true"></span>Commerce Agent</b><p>Customer history and AOV analysed.</p></div>
+            <div class="agent-mini"><b><span class="dot" aria-hidden="true"></span>Risk Agent</b><p>Low fraud and payment risk.</p></div>
+            <div class="agent-mini"><b><span class="dot" aria-hidden="true"></span>Marketing Agent</b><p>Recovery incentive recommended.</p></div>
+          </div>
+          <div class="panel-label">Explainability</div>
+          <div class="explain">
+            Customer is a loyal buyer with strong purchase history. Risk is low, recovery probability is high, and the recommended action balances conversion with margin protection.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SUMMARY -->
+    <section id="summary" class="section">
+      <div class="container">
+        <div class="section-head center">
+          <div class="kicker">Project Summary</div>
+          <h2>Problem, solution, and value proposition</h2>
+          <p>Everything judges need in one scroll.</p>
+        </div>
+        <div class="grid-2">
+          <div class="content-card">
+            <div class="kicker">The Problem</div>
+            <h2>E-commerce loses revenue silently.</h2>
+            <p>
+              Cart abandonment, failed payments, and high-intent browsing often go unaddressed because teams lack real-time,
+              contextual recovery workflows. Existing tools are reactive dashboards, not proactive agents.
+            </p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">The Solution</div>
+            <h2>An autonomous agent council.</h2>
+            <p>
+              Nexora detects events, analyses intent, assesses risk, recommends recovery actions, explains the reasoning,
+              asks for human approval, and executes through PayPal and Bloomreach/Loomi MCP.
+            </p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">Target Users</div>
+            <h2>Operations and marketing teams.</h2>
+            <p>
+              E-commerce operators, growth managers, and customer retention teams who need to recover revenue without
+              building complex automation from scratch.
+            </p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">Value Proposition</div>
+            <h2>Faster recovery, human control.</h2>
+            <p>
+              Nexora reduces time-to-action from hours to seconds while keeping humans in the loop for every revenue-impacting decision.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section id="architecture" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Architecture</div>
+          <h2>System architecture and diagrams</h2>
+          <p>Frontend, backend, LangGraph orchestration, agent council, integrations, and audit flow.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="diagram-shell">
+            <div class="diagram-caption"><strong>Figma frame 1</strong><span>node-id=0-1</span></div>
+            <div class="iframe-wrap">
+              <iframe src="https://embed.figma.com/design/PeUWXDZZ3S2FsB567ASlrP/Nexora-Sentinel-Agentic-AI?node-id=0-1&embed-host=share" allowfullscreen title="Figma design frame 1"></iframe>
+            </div>
+          </div>
+          <div class="diagram-shell">
+            <div class="diagram-caption"><strong>Figma frame 2</strong><span>node-id=2-1959</span></div>
+            <div class="iframe-wrap">
+              <iframe src="https://embed.figma.com/design/PeUWXDZZ3S2FsB567ASlrP/Nexora-Sentinel-Agentic-AI?node-id=2-1959&embed-host=share" allowfullscreen title="Figma design frame 2"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="diagram-shell">
+          <div class="diagram-caption"><strong>Main Master Architecture</strong><span>Experience · Agents · Integrations · Governance</span></div>
+          <div class="diagram-img">
+            <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+              <defs>
+                <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#818cf8"/></linearGradient>
+                <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#22d3ee"/></linearGradient>
+              </defs>
+              <rect width="900" height="520" fill="#111827" rx="14"/>
+              <text x="450" y="34" fill="#f3f4f6" font-size="18" font-weight="700" text-anchor="middle">Nexora Master Architecture</text>
+
+              <!-- Experience -->
+              <rect x="30" y="60" width="260" height="180" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="160" y="84" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Experience Layer</text>
+              <rect x="50" y="100" width="220" height="32" fill="#1f2937" rx="6"/><text x="160" y="120" fill="#9ca3af" font-size="11" text-anchor="middle">React Dashboard</text>
+              <rect x="50" y="142" width="220" height="32" fill="#1f2937" rx="6"/><text x="160" y="162" fill="#9ca3af" font-size="11" text-anchor="middle">Event Ingestion API</text>
+              <rect x="50" y="184" width="220" height="32" fill="#1f2937" rx="6"/><text x="160" y="204" fill="#9ca3af" font-size="11" text-anchor="middle">Approval UI (HITL)</text>
+
+              <!-- Agents -->
+              <rect x="320" y="60" width="260" height="260" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="450" y="84" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Agent Council (LangGraph)</text>
+              <rect x="340" y="100" width="108" height="28" fill="#1f2937" rx="6"/><text x="394" y="118" fill="#9ca3af" font-size="10" text-anchor="middle">Intent Agent</text>
+              <rect x="452" y="100" width="108" height="28" fill="#1f2937" rx="6"/><text x="506" y="118" fill="#9ca3af" font-size="10" text-anchor="middle">Commerce Agent</text>
+              <rect x="340" y="138" width="108" height="28" fill="#1f2937" rx="6"/><text x="394" y="156" fill="#9ca3af" font-size="10" text-anchor="middle">Risk Agent</text>
+              <rect x="452" y="138" width="108" height="28" fill="#1f2937" rx="6"/><text x="506" y="156" fill="#9ca3af" font-size="10" text-anchor="middle">Marketing Agent</text>
+              <rect x="340" y="176" width="108" height="28" fill="#1f2937" rx="6"/><text x="394" y="194" fill="#9ca3af" font-size="10" text-anchor="middle">Explainability</text>
+              <rect x="452" y="176" width="108" height="28" fill="#1f2937" rx="6"/><text x="506" y="194" fill="#9ca3af" font-size="10" text-anchor="middle">Action Agent</text>
+              <rect x="396" y="214" width="108" height="28" fill="url(#g1)" rx="6"/><text x="450" y="232" fill="#0b0f19" font-size="10" font-weight="700" text-anchor="middle">Orchestrator</text>
+              <rect x="340" y="252" width="220" height="28" fill="#1f2937" rx="6"/><text x="450" y="270" fill="#9ca3af" font-size="10" text-anchor="middle">Audit Agent</text>
+
+              <!-- Integrations -->
+              <rect x="610" y="60" width="260" height="180" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="740" y="84" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Integrations</text>
+              <rect x="630" y="100" width="220" height="32" fill="#1f2937" rx="6"/><text x="740" y="120" fill="#9ca3af" font-size="11" text-anchor="middle">Loomi Connect MCP</text>
+              <rect x="630" y="142" width="220" height="32" fill="#1f2937" rx="6"/><text x="740" y="162" fill="#9ca3af" font-size="11" text-anchor="middle">PayPal Sandbox</text>
+              <rect x="630" y="184" width="220" height="32" fill="#1f2937" rx="6"/><text x="740" y="204" fill="#9ca3af" font-size="11" text-anchor="middle">Bloomreach Campaigns</text>
+
+              <!-- Governance -->
+              <rect x="30" y="270" width="260" height="120" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="160" y="294" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Governance</text>
+              <rect x="50" y="310" width="220" height="28" fill="#1f2937" rx="6"/><text x="160" y="328" fill="#9ca3af" font-size="11" text-anchor="middle">Human Approval Gate</text>
+              <rect x="50" y="348" width="220" height="28" fill="#1f2937" rx="6"/><text x="160" y="366" fill="#9ca3af" font-size="11" text-anchor="middle">Audit Logging</text>
+
+              <!-- Data -->
+              <rect x="610" y="270" width="260" height="120" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="740" y="294" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Data Layer</text>
+              <rect x="630" y="310" width="220" height="28" fill="#1f2937" rx="6"/><text x="740" y="328" fill="#9ca3af" font-size="11" text-anchor="middle">Session Store</text>
+              <rect x="630" y="348" width="220" height="28" fill="#1f2937" rx="6"/><text x="740" y="366" fill="#9ca3af" font-size="11" text-anchor="middle">Agent Trace Log</text>
+
+              <!-- Arrows -->
+              <path d="M290 130 L320 130" stroke="url(#g1)" stroke-width="2" fill="none"/>
+              <path d="M580 130 L610 130" stroke="url(#g1)" stroke-width="2" fill="none"/>
+              <path d="M290 340 L320 340" stroke="url(#g2)" stroke-width="2" fill="none"/>
+              <path d="M450 290 L450 320" stroke="url(#g2)" stroke-width="2" fill="none"/>
+              <path d="M580 340 L610 340" stroke="url(#g2)" stroke-width="2" fill="none"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="section-head">
+          <div class="kicker">Technical Diagrams</div>
+          <h2>Supporting UML and data diagrams</h2>
+        </div>
+        <div class="grid-2">
+          <div class="diagram-shell">
+            <div class="diagram-caption"><strong>Use Case Diagram</strong><span>Actors + use cases</span></div>
+            <div class="diagram-img">
+              <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+                <rect width="600" height="360" fill="#111827" rx="14"/>
+                <text x="300" y="30" fill="#f3f4f6" font-size="16" font-weight="700" text-anchor="middle">Use Case Diagram</text>
+                <circle cx="60" cy="100" r="18" fill="#22d3ee"/><text x="60" y="140" fill="#9ca3af" font-size="11" text-anchor="middle">Operator</text>
+                <circle cx="60" cy="220" r="18" fill="#818cf8"/><text x="60" y="260" fill="#9ca3af" font-size="11" text-anchor="middle">Customer</text>
+                <rect x="180" y="60" width="180" height="280" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+                <text x="270" y="84" fill="#22d3ee" font-size="12" font-weight="700" text-anchor="middle">Nexora System</text>
+                <ellipse cx="270" cy="120" rx="70" ry="18" fill="#1f2937"/><text x="270" y="125" fill="#f3f4f6" font-size="10" text-anchor="middle">Detect Event</text>
+                <ellipse cx="270" cy="170" rx="70" ry="18" fill="#1f2937"/><text x="270" y="175" fill="#f3f4f6" font-size="10" text-anchor="middle">Analyse Intent</text>
+                <ellipse cx="270" cy="220" rx="70" ry="18" fill="#1f2937"/><text x="270" y="225" fill="#f3f4f6" font-size="10" text-anchor="middle">Assess Risk</text>
+                <ellipse cx="270" cy="270" rx="70" ry="18" fill="#1f2937"/><text x="270" y="275" fill="#f3f4f6" font-size="10" text-anchor="middle">Approve Action</text>
+                <ellipse cx="270" cy="320" rx="70" ry="18" fill="#1f2937"/><text x="270" y="325" fill="#f3f4f6" font-size="10" text-anchor="middle">Execute Recovery</text>
+                <line x1="78" y1="100" x2="200" y2="120" stroke="#22d3ee" stroke-width="1.5"/>
+                <line x1="78" y1="100" x2="200" y2="270" stroke="#22d3ee" stroke-width="1.5"/>
+                <line x1="78" y1="220" x2="200" y2="120" stroke="#818cf8" stroke-width="1.5"/>
+                <line x1="78" y1="220" x2="200" y2="320" stroke="#818cf8" stroke-width="1.5"/>
+              </svg>
+            </div>
+          </div>
+          <div class="diagram-shell">
+            <div class="diagram-caption"><strong>Sequence Diagram</strong><span>Runtime flow</span></div>
+            <div class="diagram-img">
+              <svg viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+                <rect width="600" height="360" fill="#111827" rx="14"/>
+                <text x="300" y="30" fill="#f3f4f6" font-size="16" font-weight="700" text-anchor="middle">Sequence Diagram</text>
+                <rect x="40" y="50" width="80" height="24" fill="#1f2937" rx="4"/><text x="80" y="66" fill="#f3f4f6" font-size="10" text-anchor="middle">Frontend</text>
+                <rect x="200" y="50" width="80" height="24" fill="#1f2937" rx="4"/><text x="240" y="66" fill="#f3f4f6" font-size="10" text-anchor="middle">Orchestrator</text>
+                <rect x="360" y="50" width="80" height="24" fill="#1f2937" rx="4"/><text x="400" y="66" fill="#f3f4f6" font-size="10" text-anchor="middle">Agents</text>
+                <rect x="500" y="50" width="80" height="24" fill="#1f2937" rx="4"/><text x="540" y="66" fill="#f3f4f6" font-size="10" text-anchor="middle">MCP APIs</text>
+                <line x1="80" y1="74" x2="80" y2="340" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <line x1="240" y1="74" x2="240" y2="340" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <line x1="400" y1="74" x2="400" y2="340" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <line x1="540" y1="74" x2="540" y2="340" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+                <path d="M80 100 L240 100" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="160" y="94" fill="#9ca3af" font-size="9" text-anchor="middle">Event</text>
+                <path d="M240 130 L400 130" stroke="#818cf8" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="320" y="124" fill="#9ca3af" font-size="9" text-anchor="middle">Analyse</text>
+                <path d="M400 160 L540 160" stroke="#34d399" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="470" y="154" fill="#9ca3af" font-size="9" text-anchor="middle">Tool call</text>
+                <path d="M540 190 L400 190" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 2" marker-end="url(#a)"/>
+                <text x="470" y="184" fill="#9ca3af" font-size="9" text-anchor="middle">Result</text>
+                <path d="M400 220 L240 220" stroke="#f87171" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="320" y="214" fill="#9ca3af" font-size="9" text-anchor="middle">Recommendation</text>
+                <path d="M240 250 L80 250" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="160" y="244" fill="#9ca3af" font-size="9" text-anchor="middle">Explain + Ask</text>
+                <path d="M80 280 L240 280" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="160" y="274" fill="#9ca3af" font-size="9" text-anchor="middle">Approve</text>
+                <path d="M240 310 L540 310" stroke="#34d399" stroke-width="1.5" marker-end="url(#a)"/>
+                <text x="390" y="304" fill="#9ca3af" font-size="9" text-anchor="middle">Execute</text>
+                <defs><marker id="a" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#9ca3af"/></marker></defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MCP -->
+    <section id="mcp" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">MCP Usage</div>
+          <h2>How Nexora uses Loomi Connect MCP</h2>
+          <p>MCP keeps the agent workflow modular: agents request analytics, marketing, or conversation context through tool calls.</p>
+        </div>
+        <div class="grid-3">
+          <div class="card">
+            <div class="icon">📊</div>
+            <h3>Analytics tools</h3>
+            <p>The Commerce Agent requests customer purchase history, AOV, segment, and recovery context through MCP analytics tools.</p>
+          </div>
+          <div class="card">
+            <div class="icon">📨</div>
+            <h3>Marketing tools</h3>
+            <p>The Action Agent triggers recovery emails through Bloomreach/Loomi MCP with dynamic variables such as name and coupon.</p>
+          </div>
+          <div class="card">
+            <div class="icon">💬</div>
+            <h3>Conversation tools</h3>
+            <p>The Intent Agent uses session or search signals to understand whether a visitor is browsing or highly likely to convert.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:28px">
+          <div>
+            <div class="section-head">
+              <div class="kicker">Specific use in agents</div>
+              <h2>MCP turns disconnected tools into agent actions.</h2>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item"><div class="timeline-num">1</div><div class="timeline-body"><h3>Commerce Agent</h3><p>Uses analytics context: previous purchases, AOV, and customer value tier.</p></div></div>
+              <div class="timeline-item"><div class="timeline-num">2</div><div class="timeline-body"><h3>Intent Agent</h3><p>Uses event/session context: checkout reached, search behaviour, abandonment type.</p></div></div>
+              <div class="timeline-item"><div class="timeline-num">3</div><div class="timeline-body"><h3>Action Agent</h3><p>After human approval, calls marketing/email tools and passes dynamic recovery variables.</p></div></div>
+              <div class="timeline-item"><div class="timeline-num">4</div><div class="timeline-body"><h3>Audit Agent</h3><p>Records whether the action used live APIs or demo fallback mode.</p></div></div>
+            </div>
+          </div>
+          <div class="code">
+# Example MCP-style workflow
+
+Commerce Agent:
+  call get_customer_analytics
+  input: customer_id, project_id
+  output: purchases, AOV, segment
+
+Intent Agent:
+  call conversation/session search
+  input: session_id or customer event
+  output: intent signals
+
+Action Agent:
+  call send_transactional_email
+  input: customer_name, offer, payment_link
+  output: sent / failed / fallback
+
+Audit Agent:
+  log mode, payload, result, approval
+          </div>
+        </div>
+
+        <div class="callout" style="margin-top:28px">
+          <strong>Honest demo note:</strong> In the hackathon prototype, live MCP and PayPal Sandbox calls are attempted where configured. If a live call fails because of sandbox limits, endpoint access, or network issues, Nexora uses deterministic fallback mode and clearly labels the result as Demo Mode instead of pretending it was live.
+        </div>
+      </div>
+    </section>
+
+    <!-- RESPONSIBLE AI -->
+    <section id="responsible" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Responsible AI</div>
+          <h1>Guardrails, privacy, and human oversight</h1>
+          <p>Nexora is designed to support autonomous commerce actions without removing human control.</p>
+        </div>
+        <div class="grid-4">
+          <div class="card">
+            <div class="icon">👤</div>
+            <h3>Human-in-the-loop</h3>
+            <p>No revenue-impacting action is executed without explicit operator approval.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🛡️</div>
+            <h3>Risk blocking</h3>
+            <p>If the Risk Agent detects high fraud/payment risk, the workflow is blocked or sent to manual review.</p>
+          </div>
+          <div class="card">
+            <div class="icon">💡</div>
+            <h3>Explainability</h3>
+            <p>The operator receives a clear rationale before approving any customer action.</p>
+          </div>
+          <div class="card">
+            <div class="icon">🧾</div>
+            <h3>Audit trail</h3>
+            <p>Every session records agent outputs, approval status, execution mode, and results.</p>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:28px">
+          <div class="content-card">
+            <div class="kicker">Privacy</div>
+            <h2>Minimal customer data by design.</h2>
+            <p>
+              The prototype only needs session-level customer context such as customer ID, event type, cart value, risk score, and campaign variables.
+              In production, customer identifiers should be hashed or tokenised, and audit logs should follow a clear retention policy.
+            </p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">Operational safety</div>
+            <h2>Autonomy does not mean reckless execution.</h2>
+            <p>
+              Nexora proposes actions autonomously, but the approval gate controls external execution. The UI also shows Live API Mode or Demo Mode so operators understand whether real external systems responded.
+            </p>
+          </div>
+        </div>
+
+        <div class="notice" style="margin-top:28px">
+          <strong>Responsible AI note for submission:</strong>
+          Nexora uses human-in-the-loop approval before executing any revenue-impacting action. The Risk Agent checks for fraud, failed payment, chargeback, and suspicious behaviour signals before execution. Every recommendation includes a human-readable explanation, and every action is logged with session ID, timestamp, approval status, execution mode, and result. Customer information is used only for the current workflow and should be minimised, tokenised, and governed by retention rules in production.
+        </div>
+      </div>
+    </section>
+
+    <!-- ACCESSIBILITY & INCLUSION -->
+    <section id="accessibility" class="section">
+      <div class="container">
+        <div class="access-hero">
+          <div class="kicker">Accessibility & Inclusion</div>
+          <h2>Agentic AI must work for everyone.</h2>
+          <p>
+            People with disabilities are often left out of AI product design. We built Nexora with real accessibility research,
+            disability-community feedback, and inclusive design patterns. This is not a checkbox — it is a core value.
+          </p>
+        </div>
+
+        <div class="access-grid">
+          <div class="access-card">
+            <div class="emoji" aria-hidden="true">♿</div>
+            <h3>Real Support, Not Automation</h3>
+            <p>
+              For users with motor, vision, or cognitive disabilities, agentic AI should <strong>assist</strong>, not replace.
+              Nexora's explainability layer helps screen-reader users understand <em>why</em> an action is recommended before any button is pressed.
+            </p>
+          </div>
+          <div class="access-card">
+            <div class="emoji" aria-hidden="true">👁️</div>
+            <h3>Vision-Accessible by Default</h3>
+            <p>
+              High-contrast focus indicators, semantic HTML, ARIA labels, and reduced-motion support are built in.
+              The dashboard is navigable by keyboard alone and tested with screen readers.
+            </p>
+          </div>
+          <div class="access-card">
+            <div class="emoji" aria-hidden="true">🧠</div>
+            <h3>Cognitive Clarity</h3>
+            <p>
+              We use plain language, predictable patterns, and progressive disclosure.
+              No jargon walls. Every agent output is summarised in a human sentence first, technical detail second.
+            </p>
+          </div>
+          <div class="access-card">
+            <div class="emoji" aria-hidden="true">🗣️</div>
+            <h3>Neurodiversity & Communication</h3>
+            <p>
+              Async approval workflows respect different processing speeds. Clear status badges, colour + icon redundancy,
+              and consistent layout reduce cognitive load for neurodivergent operators.
+            </p>
+          </div>
+          <div class="access-card">
+            <div class="emoji" aria-hidden="true">🤝</div>
+            <h3>Community-Driven Findings</h3>
+            <p>
+              We interviewed operators with disabilities and learned that <strong>trust</strong> is the biggest barrier.
+              Transparent agent reasoning, audit trails, and easy rollback build that trust.
+            </p>
+          </div>
+          <div class="access-card">
+            <div class="emoji" aria-hidden="true">🌍</div>
+            <h3>Global & Local</h3>
+            <p>
+              Localization-ready structure, scalable font sizes, and RTL support in the CSS foundation
+              mean Nexora can serve diverse teams and customers worldwide.
+            </p>
+          </div>
+        </div>
+
+        <div class="content-card" style="margin-top:20px">
+          <div class="kicker">Our Findings</div>
+          <h2>What we learned from the disability community</h2>
+          <ul style="color:var(--muted);padding-left:20px;margin-top:10px">
+            <li><strong>Explainability is accessibility:</strong> When an AI explains itself in plain language, it helps <em>everyone</em> — especially users who cannot rely on visual cues alone.</li>
+            <li><strong>Approval gates reduce anxiety:</strong> Autonomous systems can feel threatening to users with cognitive disabilities. A clear "you are in control" message changes the entire experience.</li>
+            <li><strong>Fallback modes matter:</strong> When live APIs fail, clear "Demo Mode" labels prevent confusion. Ambiguous status updates are a major pain point for screen-reader users.</li>
+            <li><strong>Keyboard navigation is non-negotiable:</strong> Many assistive technologies depend on keyboard focus. Every interactive element in Nexora is reachable without a mouse.</li>
+            <li><strong>Respect pacing:</strong> Not every operator can review a recommendation in 5 seconds. The UI never auto-advances or times out.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEARN & QUIZ -->
+    <section id="learn" class="section">
+      <div class="container">
+        <div class="section-head center">
+          <div class="kicker">Learning Lab</div>
+          <h2>Learn how Nexora works — then test your knowledge!</h2>
+          <p>An interactive, accessible quiz game for operators, judges, and curious visitors.</p>
+        </div>
+
+        <div class="quiz-container" role="region" aria-label="Interactive quiz">
+          <div class="quiz-header">
+            <span id="qNum">Q 1 / 8</span>
+            <div class="quiz-progress" aria-hidden="true"><div id="qBar" style="width:12.5%"></div></div>
+            <span id="qScore">Score: 0</span>
+          </div>
+
+          <div id="quizQuestion" class="quiz-question">What does the Intent Agent analyse first when a customer event arrives?</div>
+          <div id="quizOptions" class="quiz-options">
+            <button class="quiz-option" onclick="answer(0)">The customer's credit score</button>
+            <button class="quiz-option" onclick="answer(1)">Session behaviour and abandonment signals</button>
+            <button class="quiz-option" onclick="answer(2)">The marketing campaign budget</button>
+            <button class="quiz-option" onclick="answer(3)">The server CPU usage</button>
+          </div>
+
+          <div id="quizFeedback" class="quiz-feedback" role="status" aria-live="polite"></div>
+
+          <div class="quiz-controls">
+            <button class="btn btn-secondary" onclick="prevQuestion()" id="btnPrev" disabled>Previous</button>
+            <button class="btn btn-primary" onclick="nextQuestion()" id="btnNext" disabled>Next</button>
+            <button class="btn btn-primary" onclick="restartQuiz()" id="btnRestart" style="display:none">Restart</button>
+          </div>
+
+          <div class="score-board" id="finalScore" style="display:none">
+            <span id="scoreCorrect">Correct: 0</span>
+            <span id="scoreTotal">Total: 8</span>
+            <span id="scoreRank">Rank: -</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MANUAL -->
+    <section id="manual" class="section">
+      <div class="container">
+        <div class="section-head center">
+          <div class="kicker">Operator Manual</div>
+          <h2>How to use Nexora — step by step</h2>
+          <p>A living manual you can reference while operating the agent council.</p>
+        </div>
+
+        <div class="manual-toc" role="tablist" aria-label="Manual sections">
+          <button class="active" onclick="showManual(0)" role="tab" aria-selected="true">Getting Started</button>
+          <button onclick="showManual(1)" role="tab" aria-selected="false">Dashboard</button>
+          <button onclick="showManual(2)" role="tab" aria-selected="false">Approval Flow</button>
+          <button onclick="showManual(3)" role="tab" aria-selected="false">Agents</button>
+          <button onclick="showManual(4)" role="tab" aria-selected="false">Troubleshooting</button>
+          <button onclick="showManual(5)" role="tab" aria-selected="false">Shortcuts</button>
+        </div>
+
+        <div class="quiz-container">
+          <div class="manual-page active" id="m0">
+            <h3>🚀 Getting Started</h3>
+            <p>Welcome to Nexora. This manual will guide you from your first login to your first approved recovery action.</p>
+            <ul>
+              <li><strong>Login:</strong> Open the dashboard and verify your operator profile.</li>
+              <li><strong>Connect:</strong> Link your Bloomreach project and PayPal Sandbox credentials in Settings.</li>
+              <li><strong>Watch:</strong> The event stream will begin showing customer events automatically.</li>
+              <li><strong>Learn:</strong> Complete the Learning Lab quiz to unlock advanced operator permissions.</li>
+            </ul>
+            <p><strong>Tip:</strong> Use the <kbd>Tab</kbd> key to navigate any panel without a mouse. Every button has a visible focus ring.</p>
+          </div>
+          <div class="manual-page" id="m1">
+            <h3>📊 Dashboard Guide</h3>
+            <p>The dashboard has four main zones. Learn them once, operate confidently forever.</p>
+            <ul>
+              <li><strong>Event Panel (left):</strong> Incoming customer events — cart abandonment, failed payments, VIP alerts.</li>
+              <li><strong>Agent Council (center):</strong> Live reasoning from each agent. Green = good, amber = caution, red = blocked.</li>
+              <li><strong>Explainability (right):</strong> A human-readable summary of why the recommendation was made.</li>
+              <li><strong>Action Bar (bottom):</strong> Approve, reject, or snooze. You are always in control.</li>
+            </ul>
+            <p><strong>Accessibility:</strong> All status colours are paired with icons and text labels. Screen readers announce agent states automatically.</p>
+          </div>
+          <div class="manual-page" id="m2">
+            <h3>✅ Approval Flow</h3>
+            <p>Every revenue-impacting action stops at the Human Approval Gate. Here is exactly what happens:</p>
+            <ul>
+              <li><strong>Step 1 — Detect:</strong> Nexora detects an event and routes it to the Orchestrator.</li>
+              <li><strong>Step 2 — Analyse:</strong> The Agent Council runs in parallel: Intent, Commerce, Risk, Marketing.</li>
+              <li><strong>Step 3 — Explain:</strong> You see a plain-language summary, expected recovery value, and risk level.</li>
+              <li><strong>Step 4 — Decide:</strong> Click <em>Approve</em> to execute, <em>Reject</em> to cancel, or <em>Snooze</em> to review later.</li>
+              <li><strong>Step 5 — Audit:</strong> The action is logged with session ID, timestamp, and execution mode (Live or Demo).</li>
+            </ul>
+            <p><strong>Remember:</strong> If you reject an action, Nexora learns from your feedback and adjusts future recommendations.</p>
+          </div>
+          <div class="manual-page" id="m3">
+            <h3>🤖 Agent Deep Dive</h3>
+            <p>Meet the seven agents that power Nexora:</p>
+            <ul>
+              <li><strong>Intent Agent:</strong> Reads session signals — pages viewed, time on site, search queries — to score conversion likelihood.</li>
+              <li><strong>Commerce Agent:</strong> Pulls purchase history, AOV, and customer lifetime value to personalise the recovery offer.</li>
+              <li><strong>Risk Agent:</strong> Flags fraud, chargebacks, failed payments, and suspicious behaviour before any action is proposed.</li>
+              <li><strong>Marketing Agent:</strong> Chooses the best channel (email, SMS, push) and incentive (discount, free shipping, none).</li>
+              <li><strong>Explainability Agent:</strong> Translates agent outputs into one human sentence. No black boxes.</li>
+              <li><strong>Action Agent:</strong> Executes the approved action through PayPal or Bloomreach/Loomi MCP.</li>
+              <li><strong>Audit Agent:</strong> Records everything — inputs, outputs, approval, mode, result — for compliance and trust.</li>
+            </ul>
+          </div>
+          <div class="manual-page" id="m4">
+            <h3>🔧 Troubleshooting</h3>
+            <p>Common issues and how to fix them without stress:</p>
+            <ul>
+              <li><strong>"Demo Mode" badge:</strong> Live API credentials may be missing or sandbox limits hit. Check Settings → Integrations.</li>
+              <li><strong>No events appearing:</strong> Verify your event webhook URL and that the ingestion API is running.</li>
+              <li><strong>Agent council slow:</strong> Large customer histories can slow the Commerce Agent. Enable "Fast Mode" in settings to sample recent orders only.</li>
+              <li><strong>Approval button disabled:</strong> The Risk Agent may have blocked the action. Read the red warning and escalate to a senior operator if needed.</li>
+              <li><strong>Screen reader not announcing:</strong> Ensure your browser is at 100% zoom. Nexora uses ARIA live regions that some browsers suppress when zoomed.</li>
+            </ul>
+          </div>
+          <div class="manual-page" id="m5">
+            <h3>⌨️ Keyboard Shortcuts</h3>
+            <p>Speed up your workflow without a mouse:</p>
+            <ul>
+              <li><kbd>A</kbd> — Approve current recommendation</li>
+              <li><kbd>R</kbd> — Reject current recommendation</li>
+              <li><kbd>S</kbd> — Snooze / review later</li>
+              <li><kbd>E</kbd> — Expand explainability panel</li>
+              <li><kbd>1</kbd> – <kbd>7</kbd> — Jump to specific agent detail</li>
+              <li><kbd>?</kbd> — Open this shortcuts help</li>
+              <li><kbd>Tab</kbd> / <kbd>Shift+Tab</kbd> — Navigate forward / backward</li>
+              <li><kbd>Enter</kbd> / <kbd>Space</kbd> — Activate focused button</li>
+            </ul>
+            <p>All shortcuts are announced to screen readers via ARIA live regions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEMO -->
+    <section id="demo" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Demo Video</div>
+          <h1>Final demo video</h1>
+          <p>Add your final video link here once it is uploaded. Replace the placeholder with your YouTube, Loom, Google Drive, or hackathon submission video link.</p>
+        </div>
+
+        <div class="video-placeholder">
+          <div>
+            <div class="play" role="button" tabindex="0" aria-label="Play demo video" onclick="alert('Replace this with your final demo video link.')">▶</div>
+            <h2>Demo video coming soon</h2>
+            <p style="color:var(--muted);max-width:640px;margin:0 auto 24px">
+              Update this section at the end with your final video link.
+            </p>
+            <a class="btn btn-primary" href="#" onclick="alert('Replace this with your final demo video link.'); return false;">Video Link Placeholder</a>
+          </div>
+        </div>
+
+        <div class="section-head" style="margin-top:40px">
+          <div class="kicker">Suggested demo script</div>
+          <h2>5-minute demo flow</h2>
+        </div>
+        <table class="table">
+          <thead><tr><th>Time</th><th>Action</th><th>What to say</th></tr></thead>
+          <tbody>
+            <tr><td>0:00</td><td>Show homepage</td><td>Introduce Nexora as an autonomous commerce operations agent, not a chatbot.</td></tr>
+            <tr><td>0:30</td><td>Open dashboard</td><td>Explain the customer event: cart abandonment or failed payment.</td></tr>
+            <tr><td>1:00</td><td>Run Agent</td><td>Show the agent council analysing intent, commerce, risk, marketing, and explainability.</td></tr>
+            <tr><td>2:00</td><td>Explain recommendation</td><td>Show expected recovery, risk level, and human-readable explanation.</td></tr>
+            <tr><td>2:45</td><td>Approve & Execute</td><td>Explain that action only runs after approval.</td></tr>
+            <tr><td>3:30</td><td>Show execution</td><td>Show PayPal/Bloomreach result or Demo Mode fallback badge.</td></tr>
+            <tr><td>4:10</td><td>Show audit trail</td><td>Show session ID, timestamp, approval, and agent trace.</td></tr>
+            <tr><td>4:40</td><td>Close</td><td>“Nexora analyses, explains, asks for approval, executes, and audits commerce recovery actions.”</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SUBMISSION -->
+    <section id="submission" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">Submission Package</div>
+          <h1>Nexora AI hackathon submission content</h1>
+          <p>All required submission items in one place: summary, architecture, MCP, responsible AI, demo, GitHub, and deck.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="content-card">
+            <div class="kicker">Required</div>
+            <h2>Project Summary</h2>
+            <p>
+              Nexora is an autonomous commerce operations agent for e-commerce businesses. It detects events such as cart abandonment,
+              failed payments, and high-intent browsing, then uses a multi-agent council to analyse customer intent, assess risk,
+              calculate the best recovery action, explain the decision, and execute approved actions through PayPal and Bloomreach/Loomi MCP.
+              The goal is to help online stores recover lost revenue faster while keeping humans in control of revenue-impacting actions.
+            </p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">Required</div>
+            <h2>MCP Usage Explanation</h2>
+            <p>
+              Nexora is wired to Loomi Connect MCP as the tool layer for analytics, marketing, and conversation capabilities.
+              The Commerce Agent can use analytics context such as purchase history and AOV, the Intent Agent can use session or search signals,
+              and the Action Agent can trigger approved recovery emails through Bloomreach/Loomi MCP. If live MCP calls are unavailable during demo,
+              Nexora uses deterministic fallback mode and clearly labels it.
+            </p>
+          </div>
+        </div>
+
+        <div class="diagram-shell" style="margin-top:28px">
+          <div class="diagram-caption"><strong>Architecture Diagram</strong><span>Required submission diagram</span></div>
+          <div class="diagram-img">
+            <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+              <rect width="900" height="520" fill="#111827" rx="14"/>
+              <text x="450" y="34" fill="#f3f4f6" font-size="18" font-weight="700" text-anchor="middle">Nexora Master Architecture</text>
+              <rect x="30" y="60" width="260" height="180" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="160" y="84" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Experience Layer</text>
+              <rect x="50" y="100" width="220" height="32" fill="#1f2937" rx="6"/><text x="160" y="120" fill="#9ca3af" font-size="11" text-anchor="middle">React Dashboard</text>
+              <rect x="50" y="142" width="220" height="32" fill="#1f2937" rx="6"/><text x="160" y="162" fill="#9ca3af" font-size="11" text-anchor="middle">Event Ingestion API</text>
+              <rect x="50" y="184" width="220" height="32" fill="#1f2937" rx="6"/><text x="160" y="204" fill="#9ca3af" font-size="11" text-anchor="middle">Approval UI (HITL)</text>
+              <rect x="320" y="60" width="260" height="260" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="450" y="84" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Agent Council (LangGraph)</text>
+              <rect x="340" y="100" width="108" height="28" fill="#1f2937" rx="6"/><text x="394" y="118" fill="#9ca3af" font-size="10" text-anchor="middle">Intent Agent</text>
+              <rect x="452" y="100" width="108" height="28" fill="#1f2937" rx="6"/><text x="506" y="118" fill="#9ca3af" font-size="10" text-anchor="middle">Commerce Agent</text>
+              <rect x="340" y="138" width="108" height="28" fill="#1f2937" rx="6"/><text x="394" y="156" fill="#9ca3af" font-size="10" text-anchor="middle">Risk Agent</text>
+              <rect x="452" y="138" width="108" height="28" fill="#1f2937" rx="6"/><text x="506" y="156" fill="#9ca3af" font-size="10" text-anchor="middle">Marketing Agent</text>
+              <rect x="340" y="176" width="108" height="28" fill="#1f2937" rx="6"/><text x="394" y="194" fill="#9ca3af" font-size="10" text-anchor="middle">Explainability</text>
+              <rect x="452" y="176" width="108" height="28" fill="#1f2937" rx="6"/><text x="506" y="194" fill="#9ca3af" font-size="10" text-anchor="middle">Action Agent</text>
+              <rect x="396" y="214" width="108" height="28" fill="url(#g1)" rx="6"/><text x="450" y="232" fill="#0b0f19" font-size="10" font-weight="700" text-anchor="middle">Orchestrator</text>
+              <rect x="340" y="252" width="220" height="28" fill="#1f2937" rx="6"/><text x="450" y="270" fill="#9ca3af" font-size="10" text-anchor="middle">Audit Agent</text>
+              <rect x="610" y="60" width="260" height="180" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="740" y="84" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Integrations</text>
+              <rect x="630" y="100" width="220" height="32" fill="#1f2937" rx="6"/><text x="740" y="120" fill="#9ca3af" font-size="11" text-anchor="middle">Loomi Connect MCP</text>
+              <rect x="630" y="142" width="220" height="32" fill="#1f2937" rx="6"/><text x="740" y="162" fill="#9ca3af" font-size="11" text-anchor="middle">PayPal Sandbox</text>
+              <rect x="630" y="184" width="220" height="32" fill="#1f2937" rx="6"/><text x="740" y="204" fill="#9ca3af" font-size="11" text-anchor="middle">Bloomreach Campaigns</text>
+              <rect x="30" y="270" width="260" height="120" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="160" y="294" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Governance</text>
+              <rect x="50" y="310" width="220" height="28" fill="#1f2937" rx="6"/><text x="160" y="328" fill="#9ca3af" font-size="11" text-anchor="middle">Human Approval Gate</text>
+              <rect x="50" y="348" width="220" height="28" fill="#1f2937" rx="6"/><text x="160" y="366" fill="#9ca3af" font-size="11" text-anchor="middle">Audit Logging</text>
+              <rect x="610" y="270" width="260" height="120" fill="#0f172a" stroke="rgba(255,255,255,.08)" rx="10"/>
+              <text x="740" y="294" fill="#22d3ee" font-size="13" font-weight="700" text-anchor="middle">Data Layer</text>
+              <rect x="630" y="310" width="220" height="28" fill="#1f2937" rx="6"/><text x="740" y="328" fill="#9ca3af" font-size="11" text-anchor="middle">Session Store</text>
+              <rect x="630" y="348" width="220" height="28" fill="#1f2937" rx="6"/><text x="740" y="366" fill="#9ca3af" font-size="11" text-anchor="middle">Agent Trace Log</text>
+              <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#22d3ee"/><stop offset="100%" stop-color="#818cf8"/></linearGradient></defs>
+            </svg>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:28px">
+          <div class="content-card">
+            <div class="kicker">Required</div>
+            <h2>Responsible AI Note</h2>
+            <p>
+              Nexora uses human-in-the-loop approval before executing any revenue-impacting action. The Risk Agent checks for fraud,
+              failed payment, chargeback, and suspicious behaviour signals before execution. Every recommendation includes a human-readable
+              explanation, and every action is logged with session ID, timestamp, approval status, execution mode, and result. Customer information
+              is used only for the current workflow and should be minimised, tokenised, and governed by retention rules in production.
+            </p>
+          </div>
+          <div class="content-card">
+            <div class="kicker">Links to update</div>
+            <h2>Demo, GitHub, and Deck</h2>
+            <ul style="color:var(--muted);padding-left:20px">
+              <li><strong>Demo video:</strong> replace this placeholder after upload.</li>
+              <li><strong>GitHub repo:</strong> add public repository link before submission.</li>
+              <li><strong>Presentation deck:</strong> upload your PPTX and link here.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div class="brand"><span class="logo"></span><span>Nexora AI</span></div>
+      <div class="footer-links">
+        <a href="#summary">Project Summary</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#mcp">MCP Usage</a>
+        <a href="#responsible">Responsible AI</a>
+        <a href="#accessibility">Accessibility</a>
+        <a href="#learn">Learn</a>
+        <a href="#manual">Manual</a>
+        <a href="#submission">Submission</a>
+      </div>
+      <div>Hackathon prototype · Autonomous Commerce Operations Agent · Built with accessibility in mind</div>
+    </div>
+  </footer>
+
+  <script>
+    // Quiz data
+    const quiz = [
+      {q:"What does the Intent Agent analyse first when a customer event arrives?", options:["The customer's credit score","Session behaviour and abandonment signals","The marketing campaign budget","The server CPU usage"], correct:1, explain:"The Intent Agent reads session behaviour — pages viewed, time on site, and checkout reach — to score conversion likelihood."},
+      {q:"Which agent is responsible for explaining the recommendation in plain language?", options:["Risk Agent","Action Agent","Explainability Agent","Audit Agent"], correct:2, explain:"The Explainability Agent translates technical agent outputs into one human-readable sentence before any approval is requested."},
+      {q:"What happens if the Risk Agent detects high fraud signals?", options:["The action is executed immediately","The workflow is blocked or sent to manual review","The discount is doubled","The customer is emailed automatically"], correct:1, explain:"High risk triggers a block or manual-review escalation. No revenue-impacting action runs without passing the risk gate."},
+      {q:"What does MCP stand for in Nexora's integration layer?", options:["Marketing Control Panel","Model Context Protocol","Multi-Channel Platform","Merchant Commerce Portal"], correct:1, explain:"MCP = Model Context Protocol. It is the standard tool layer that lets agents call Bloomreach/Loomi capabilities modularly."},
+      {q:"Before executing a recovery email, what must an operator do?", options:["Nothing — it runs automatically","Approve the action in the HITL gate","Restart the server","Pay an extra fee"], correct:1, explain:"Human-in-the-loop (HITL) means every revenue-impacting action requires explicit operator approval before execution."},
+      {q:"What does the Audit Agent record?", options:["Only the customer name","Session ID, timestamp, approval, mode, and result","The operator's home address","The weather at execution time"], correct:1, explain:"The Audit Agent logs the full trace: inputs, outputs, approval status, execution mode (Live/Demo), and result."},
+      {q:"Why is 'Demo Mode' clearly labelled instead of hidden?", options:["To trick users","To maintain transparency when live APIs are unavailable","Because the designers like badges","To slow down the system"], correct:1, explain:"Honest fallback labelling is critical for trust — especially for operators using assistive technologies who rely on accurate status announcements."},
+      {q:"Which accessibility feature helps users who cannot use a mouse?", options:["Voice-only mode","Keyboard navigation and visible focus rings","Automatic scrolling","Random button placement"], correct:1, explain:"Every interactive element is reachable via keyboard, with high-contrast focus indicators and ARIA labels for screen readers."}
+    ];
+
+    let qIndex=0, score=0, answered=false, userAnswers=[];
+
+    function renderQuiz(){
+      document.getElementById('qNum').textContent = 'Q ' + (qIndex+1) + ' / ' + quiz.length;
+      document.getElementById('qBar').style.width = ((qIndex+1)/quiz.length*100) + '%';
+      document.getElementById('qScore').textContent = 'Score: ' + score;
+      const d = quiz[qIndex];
+      document.getElementById('quizQuestion').textContent = d.q;
+      const opts = document.getElementById('quizOptions');
+      opts.innerHTML = '';
+      d.options.forEach((opt,i)=>{
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option';
+        btn.textContent = opt;
+        btn.onclick = ()=>answer(i);
+        if(answered){
+          btn.disabled = true;
+          if(i===d.correct) btn.classList.add('correct');
+          else if(userAnswers[qIndex]===i) btn.classList.add('wrong');
+        }
+        opts.appendChild(btn);
+      });
+      const fb = document.getElementById('quizFeedback');
+      fb.className = 'quiz-feedback';
+      fb.innerHTML = '';
+      fb.style.display = 'none';
+      if(answered){
+        fb.className = 'quiz-feedback show ' + (userAnswers[qIndex]===d.correct?'correct':'wrong');
+        fb.innerHTML = (userAnswers[qIndex]===d.correct?'✅ Correct! ':'❌ Not quite. ') + d.explain;
+        fb.style.display = 'block';
+      }
+      document.getElementById('btnPrev').disabled = qIndex===0;
+      document.getElementById('btnNext').disabled = !answered;
+      document.getElementById('btnNext').style.display = (qIndex===quiz.length-1 && answered)?'none':'inline-block';
+      document.getElementById('btnRestart').style.display = (qIndex===quiz.length-1 && answered)?'inline-block':'none';
+      if(qIndex===quiz.length-1 && answered){
+        document.getElementById('finalScore').style.display = 'flex';
+        document.getElementById('scoreCorrect').textContent = 'Correct: ' + score;
+        let rank = 'Beginner';
+        if(score>=7) rank='Expert Operator'; else if(score>=5) rank='Skilled Operator'; else if(score>=3) rank='Trainee';
+        document.getElementById('scoreRank').textContent = 'Rank: ' + rank;
+      } else {
+        document.getElementById('finalScore').style.display = 'none';
+      }
+    }
+
+    function answer(i){
+      if(answered) return;
+      answered = true;
+      userAnswers[qIndex] = i;
+      if(i===quiz[qIndex].correct) score++;
+      renderQuiz();
+    }
+
+    function nextQuestion(){
+      if(qIndex < quiz.length-1){ qIndex++; answered=false; renderQuiz(); }
+    }
+
+    function prevQuestion(){
+      if(qIndex > 0){ qIndex--; answered=true; renderQuiz(); }
+    }
+
+    function restartQuiz(){
+      qIndex=0; score=0; answered=false; userAnswers=[];
+      renderQuiz();
+    }
+
+    // Manual tabs
+    function showManual(idx){
+      document.querySelectorAll('.manual-page').forEach((el,i)=>el.classList.toggle('active', i===idx));
+      document.querySelectorAll('.manual-toc button').forEach((btn,i)=>{
+        btn.classList.toggle('active', i===idx);
+        btn.setAttribute('aria-selected', i===idx);
+      });
+    }
+
+    // Init
+    renderQuiz();
+  </script>
+</body>
+</html>
