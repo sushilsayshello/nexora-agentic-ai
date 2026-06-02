@@ -52,6 +52,92 @@ If a live MCP call fails (sandbox limits, network, auth), Nexora falls back to d
 
 ---
 
+## 🏗️ Architecture
+
+### System Overview
+┌─────────────────┐     ┌──────────────────────────┐     ┌─────────────────┐
+│  Experience     │────▶│      Agent Council       │────▶│  Integrations   │
+│  (React UI)     │     │  (LangGraph Orchestrator)│     │  (MCP / APIs)   │
+│  · Dashboard    │     │  · Intent Agent          │     │  · Loomi MCP    │
+│  · Event API    │     │  · Commerce Agent        │     │  · PayPal       │
+│  · HITL Approval│     │  · Risk Agent            │     │  · Bloomreach   │
+└─────────────────┘     │  · Marketing Agent       │     └─────────────────┘
+│  · Explainability Agent    │
+│  · Action Agent            │
+│  · Audit Agent             │
+└──────────────────────────┘
+│
+┌──────────┴──────────┐
+│     Governance      │
+│  · Approval Gate    │
+│  · Audit Logging    │
+└─────────────────────┘
+
+
+### Full Tech Stack (v1)
+
+| Layer | Technology | Role |
+|-------|------------|------|
+| **Frontend** | React 18 + TypeScript | Dashboard UI, event panels, approval interface |
+| **State Management** | Zustand | Lightweight global store for session and UI state |
+| **Styling** | Tailwind CSS + CSS Modules | Responsive, accessible component styling |
+| **Build Tool** | Vite | Fast dev server and optimised production builds |
+| **Backend** | Python 3.11 + FastAPI | REST API, event ingestion, webhook handlers |
+| **Orchestration** | LangGraph + LangChain | Agent council state machine, node routing, parallel execution |
+| **LLM** | OpenAI GPT-4o / GPT-4o-mini | Agent reasoning, explainability generation |
+| **MCP Layer** | Loomi Connect MCP (Bloomreach) | Analytics, marketing, and conversation tool calls |
+| **Payments** | PayPal Sandbox SDK | Recovery payment link generation and refund handling |
+| **Database** | PostgreSQL 15 | Customer events, operator profiles, configuration |
+| **Cache** | Redis 7 | Session state, agent intermediate results, rate limiting |
+| **Message Queue** | Celery + Redis | Async task processing for non-blocking agent runs |
+| **Audit Storage** | PostgreSQL + S3-compatible | Structured logs + blob storage for agent traces |
+| **Hosting (Site)** | GitHub Pages | Static hackathon submission website |
+| **Hosting (API)** | Render / Railway / Fly.io (planned) | FastAPI backend deployment |
+| **Container** | Docker + Docker Compose | Local development and deployment packaging |
+| **CI/CD** | GitHub Actions | Lint, test, and deploy pipelines |
+
+### Database Schema (v1)
+
+**Core Tables:**
+- `events` — customer event ingestion (type, payload, timestamp, status)
+- `sessions` — active operator sessions and HITL states
+- `agent_runs` — per-orchestration run metadata (graph version, trigger source)
+- `agent_outputs` — individual agent results (agent_type, output_json, latency_ms)
+- `approvals` — operator decisions (operator_id, decision, timestamp, rationale)
+- `executions` — final action outcomes (mode: live/demo, provider, response, error)
+- `audit_trails` — compliance logs (full trace, S3 pointer, retention flag)
+- `operators` — user profiles, roles, accessibility preferences
+
+
+### Data Flow (v1)
+Customer Event → FastAPI Ingestion → PostgreSQL (raw event)
+│
+▼
+Redis (session cache)
+│
+▼
+LangGraph Orchestrator
+├─► Intent Agent (LLM call)
+├─► Commerce Agent (MCP analytics)
+├─► Risk Agent (rule + LLM)
+└─► Marketing Agent (MCP context)
+│
+▼
+Explainability Agent (synthesis)
+│
+▼
+HITL Gate (Redis state lock)
+├─► Approved → Action Agent → MCP / PayPal
+├─► Rejected → Audit log + feedback loop
+└─► Snoozed → Scheduled retry queue
+│
+▼
+Audit Agent → PostgreSQL + S3 trace
+│
+▼
+React Dashboard (WebSocket/SSE update)
+
+
 ## 🛡️ Responsible AI
 
 - **Human-in-the-loop:** No revenue-impacting action executes without explicit operator approval
