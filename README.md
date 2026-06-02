@@ -190,33 +190,6 @@ If a live MCP call fails (sandbox limits, network, auth), Nexora falls back to d
 - `operators` — user profiles, roles, accessibility preferences
 
 
-### Data Flow (v1)
-Customer Event → FastAPI Ingestion → PostgreSQL (raw event)
-│
-▼
-Redis (session cache)
-│
-▼
-LangGraph Orchestrator
-├─► Intent Agent (LLM call)
-├─► Commerce Agent (MCP analytics)
-├─► Risk Agent (rule + LLM)
-└─► Marketing Agent (MCP context)
-│
-▼
-Explainability Agent (synthesis)
-│
-▼
-HITL Gate (Redis state lock)
-├─► Approved → Action Agent → MCP / PayPal
-├─► Rejected → Audit log + feedback loop
-└─► Snoozed → Scheduled retry queue
-│
-▼
-Audit Agent → PostgreSQL + S3 trace
-│
-▼
-React Dashboard (WebSocket/SSE update)
 
 
 ## 🛡️ Responsible AI
