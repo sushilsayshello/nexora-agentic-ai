@@ -1,14 +1,5 @@
-# Nexora Sentinel Unified Software
+# Nexora Sentinel Agentic AI
 
-This is the combined runnable version made from the uploaded Nexora folders.
-
-## Best source choice
-
-- Best frontend concept: `Nexora Agentic AI(1).zip` because it had the cleanest React-style product story and sections.
-- Best backend/API: `nexora_sentinel_production_ready(1).zip` because it already had a working FastAPI server, mandate engine, PayPal/Bloomreach/Exponea endpoints, audit trail, personas and merchant APIs.
-- Best architecture/prototype reference: `nexora-sentinel-v2 (1).zip` because it included Docker-style structure, LangGraph-style backend files and a graph image.
-
-This unified folder uses the working backend as the base and a clean production-style frontend that runs without npm. That makes it easier to demo quickly on Windows.
 
 ## What is included
 
