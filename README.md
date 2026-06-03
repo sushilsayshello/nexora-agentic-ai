@@ -240,3 +240,276 @@ Plus a **6-tab Operator Manual** covering:
 
 ---
 
+# Manual Run Guide
+
+## Step 1 — Open the Project Folder
+
+Open PowerShell and navigate to the project root folder (the folder containing `backend`, `frontend`, and `scripts`).
+
+```powershell
+cd "C:\Users\Sushil Shakya\Desktop\Nexora_Sentinel_Unified_Software\Nexora_Sentinel_Unified_Software"
+```
+
+Verify:
+
+```powershell
+dir
+```
+
+Expected output:
+
+```text
+backend
+frontend
+scripts
+README.md
+.gitignore
+```
+
+---
+
+## Step 2 — Start the Backend
+
+Open PowerShell:
+
+```powershell
+cd backend
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+Health Check:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+API Documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+Leave this terminal running.
+
+---
+
+## Step 3 — Start the Frontend
+
+Open a second PowerShell window:
+
+```powershell
+cd "C:\Users\Sushil Shakya\Desktop\Nexora_Sentinel_Unified_Software\Nexora_Sentinel_Unified_Software"
+cd frontend
+python -m http.server 3000
+```
+
+Frontend URL:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## Step 4 — Login Accounts
+
+### Standard Customer
+
+```text
+Email: customer@nexora.ai
+Password: Customer@123
+```
+
+### Deaf / Hard of Hearing
+
+```text
+Email: deaf@nexora.ai
+Password: Customer@123
+```
+
+### Low Vision
+
+```text
+Email: vision@nexora.ai
+Password: Customer@123
+```
+
+### Cognitive Support
+
+```text
+Email: cognitive@nexora.ai
+Password: Customer@123
+```
+
+### Motor Support
+
+```text
+Email: motor@nexora.ai
+Password: Customer@123
+```
+
+### Merchant Admin
+
+```text
+Email: admin@nexora.ai
+Password: Nexora@123
+```
+
+---
+
+## Step 5 — Demo Flow
+
+1. Open:
+
+```text
+http://localhost:3000
+```
+
+2. Login as:
+
+```text
+customer@nexora.ai
+Customer@123
+```
+
+3. Select an Agentic AI scenario.
+
+4. Let Nexora:
+   - Detect customer signal
+   - Generate recommendation
+   - Calculate risk score
+   - Explain reasoning
+
+5. Approve or reject mandate.
+
+6. If approved:
+   - Mandate token generated
+   - Checkout enabled
+   - Audit event created
+
+7. Login as merchant:
+
+```text
+admin@nexora.ai
+Nexora@123
+```
+
+8. View:
+   - Audit logs
+   - Approved actions
+   - Blocked actions
+   - Merchant dashboard
+
+---
+
+## Troubleshooting
+
+### Backend not starting
+
+```powershell
+cd backend
+venv\Scripts\activate
+python -m uvicorn main:app --reload --host 127.0.0.1 --port 8000
+```
+
+---
+
+### Check Backend Health
+
+Open:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+---
+
+### Port 8000 Already In Use
+
+```powershell
+netstat -ano | findstr :8000
+```
+
+Stop the conflicting process.
+
+---
+
+### Port 3000 Already In Use
+
+```powershell
+cd frontend
+python -m http.server 3001
+```
+
+Open:
+
+```text
+http://localhost:3001
+```
+
+---
+
+## Security Notes
+
+Credentials and API keys must remain in:
+
+```text
+backend/.env
+```
+
+Never place credentials inside:
+
+```text
+frontend/index.html
+```
+
+Frontend should only communicate with backend APIs.
+
+Backend handles:
+
+- PayPal
+- Bloomreach
+- Exponea
+- Risk Engine
+- Mandate Engine
+- Audit Logs
+- Authentication
+
+Do not commit `.env` to GitHub.
+
+---
+
+## Application URLs
+
+### Frontend
+
+```text
+http://localhost:3000
+```
+
+### Backend
+
+```text
+http://127.0.0.1:8000
+```
+
+### API Docs
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+### Health Check
+
+```text
+http://127.0.0.1:8000/health
+```
